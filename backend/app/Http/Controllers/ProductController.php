@@ -58,12 +58,8 @@ class ProductController extends Controller
                 'image' => $imageName
             ]);
 
-            if ($product) {
-                return response()->json(['message' => 'Berhasil Mengupdate Produk.'], 201);
-            } else {
-                return response()->json(['message' => 'Gagal Mengupdate Produk.'], 500);
-            }
-        } elseif (!$request->hasFile('image')) {
+            return response()->json(['message' => 'Berhasil Mengupdate Produk.'], 200);
+        } else {
             $productData = $request->validate([
                 'name' => 'required|min:5|max:200',
                 'size' => 'required|in:S,M,L,XL,XXL,XXXL',
@@ -71,22 +67,18 @@ class ProductController extends Controller
                 'stock' => 'required|numeric|min:1',
             ]);
 
-            $product->update($productData);
-
-            if ($product) {
-                return response()->json(['message' => 'Berhasil Mengupdate Produk.'], 201);
+            if ($product->update($productData)) {
+                return response()->json(['message' => 'Berhasil Mengupdate Produk.'], 200);
             } else {
                 return response()->json(['message' => 'Gagal Mengupdate Produk.'], 500);
             }
-        } elseif ($request->$product) {
-            return response()->json(['message' => 'Anda tidak merubah apa pun'], 304);
         }
     }
 
     public function destroy(Product $product)
     {
         if ($product->delete()) {
-            return response()->json(['message' => 'Anda berhasil menghapus produk ini.'], 201);
+            return response()->json(['message' => 'Anda berhasil menghapus produk ini.'], 204);
         } else {
             return response()->json(['message' => 'Gagal menghapus produk ini.'], 500);
         }

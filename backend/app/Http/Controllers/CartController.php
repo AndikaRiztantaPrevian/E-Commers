@@ -35,7 +35,7 @@ class CartController extends Controller
         ]);
 
         if ($cartUpdate) {
-            return response()->json(['message' => 'Berhasil memperbarui jumlah produk.'], 201);
+            return response()->json(['message' => 'Berhasil memperbarui jumlah produk.'], 200);
         } else {
             return response()->json(['message' => 'Gagal memperbarui jumlah produk.'], 500);
         }
@@ -44,7 +44,7 @@ class CartController extends Controller
     public function destroy(Cart $cart)
     {
         if ($cart->delete()) {
-            return response()->json(['message' => 'Berhasil menghapus produk dari keranjang.'], 201);
+            return response()->json(['message' => 'Berhasil menghapus produk dari keranjang.'], 204);
         } else {
             return response()->json(['message' => 'Gagal menghapus produk dari keranjang.'], 500);
         }

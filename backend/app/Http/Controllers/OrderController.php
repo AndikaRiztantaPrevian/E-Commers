@@ -50,6 +50,10 @@ class OrderController extends Controller
 
     public function destroy(Order $order)
     {
-        //
+        if($order->delete()) {
+            return response()->json(['message' => 'Berhasil membatalkan pesanan'], 204);
+        } else {
+            return response()->json(['message' => 'Gagal membatalkan pesanan'], 500);
+        }
     }
 }
