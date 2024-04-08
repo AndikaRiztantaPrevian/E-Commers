@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Traits\UUIDAsPrimaryKey;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
-    use HasFactory, UUIDAsPrimaryKey;
+    use HasFactory, HasUuids;
 
     protected $guarded = ['id'];
     protected $table = 'orders';
