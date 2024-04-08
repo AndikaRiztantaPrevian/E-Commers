@@ -9,26 +9,26 @@ class CartController extends Controller
 {
     public function store(Request $request)
     {
-        $cartData = $request->validate([
-            'qty' => 'required|numeric',
-            'product_id' => 'required',
-        ]);
+        $cartData = $this->validateCart($request);
 
-        $cart = Cart::create($cartData);
+        if ($cartData['product_id']) {
+            $cart = Cart::create($cartData);
 
-        if ($cart) {
-            return response()->json(['message' => 'Berhasil Menambah Produk Ke Keranjang.'], 201);
+            if ($cart) {
+                return response()->json(['message' => 'Berhasil Menambah Produk Ke Keranjang.'], 201);
+            } else {
+                return response()->json(['message' => 'Gagal Menambah Produk Ke Keranjang.'], 500);
+            }
         } else {
-            return response()->json(['message' => 'Gagal Menambah Produk Ke Keranjang.'], 500);
+            return response()->json([
+                'message' => 'Produk tidak ditemukan atau sudah dihapus oleh penjual.',
+            ], 200);
         }
     }
 
     public function update(Request $request, Cart $cart)
     {
-        $cartData = $request->validate([
-            'qty' => 'required|numeric',
-            'product_id' => 'required'
-        ]);
+        $cartData = $this->validateCart($request);
 
         $cartUpdate = $cart->update([
             'qty' => $cartData['qty']
@@ -48,5 +48,13 @@ class CartController extends Controller
         } else {
             return response()->json(['message' => 'Gagal menghapus produk dari keranjang.'], 500);
         }
+    }
+
+    protected function validateCart(Request $request)
+    {
+        return $request->validate([
+            'qty' => 'required|numeric',
+            'product_id' => 'required',
+        ]);
     }
 }

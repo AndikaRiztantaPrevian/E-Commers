@@ -10,13 +10,7 @@ class ProductController extends Controller
 {
     public function store(Request $request)
     {
-        $productData = $request->validate([
-            'name' => 'required|min:5|max:200',
-            'size' => 'required|in:S,M,L,XL,XXL,XXXL',
-            'price' => 'required|numeric|min:1',
-            'stock' => 'required|numeric|min:1',
-            'image' => 'required|image|mimes:png,jpg,jpeg'
-        ]);
+        $productData = $this->validateProduct($request);
 
         $imageName = $request->file('image')->storeAs('/Product/Image', 'public');
 
@@ -38,13 +32,7 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         if ($request->hasFile('image')) {
-            $productData = $request->validate([
-                'name' => 'required|min:5|max:200',
-                'size' => 'required|in:S,M,L,XL,XXL,XXXL',
-                'price' => 'required|numeric|min:1',
-                'stock' => 'required|numeric|min:1',
-                'image' => 'required|image|mimes:png,jpg,jpeg'
-            ]);
+            $productData = $this->validateProduct($request);
 
             Storage::disk('public')->delete($product->image);
 
@@ -60,12 +48,7 @@ class ProductController extends Controller
 
             return response()->json(['message' => 'Berhasil Mengupdate Produk.'], 200);
         } else {
-            $productData = $request->validate([
-                'name' => 'required|min:5|max:200',
-                'size' => 'required|in:S,M,L,XL,XXL,XXXL',
-                'price' => 'required|numeric|min:1',
-                'stock' => 'required|numeric|min:1',
-            ]);
+            $productData = $this->validateProductWithOutImage($request);
 
             if ($product->update($productData)) {
                 return response()->json(['message' => 'Berhasil Mengupdate Produk.'], 200);
@@ -82,5 +65,26 @@ class ProductController extends Controller
         } else {
             return response()->json(['message' => 'Gagal menghapus produk ini.'], 500);
         }
+    }
+
+    protected function validateProduct(Request $request)
+    {
+        return $request->validate([
+            'name' => 'required|min:5|max:200',
+            'size' => 'required|in:S,M,L,XL,XXL,XXXL',
+            'price' => 'required|numeric|min:1',
+            'stock' => 'required|numeric|min:1',
+            'image' => 'required|image|mimes:png,jpg,jpeg'
+        ]);
+    }
+
+    protected function validateProductWithOutImage(Request $request)
+    {
+        return $request->validate([
+            'name' => 'required|min:5|max:200',
+            'size' => 'required|in:S,M,L,XL,XXL,XXXL',
+            'price' => 'required|numeric|min:1',
+            'stock' => 'required|numeric|min:1',
+        ]);
     }
 }

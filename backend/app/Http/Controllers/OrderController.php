@@ -12,13 +12,7 @@ class OrderController extends Controller
 {
     public function store(Request $request)
     {
-        $orderData = $request->validate([
-            'product_id' => 'required',
-            'qty' => 'required|numeric',
-            'size' => 'required|in:S,M,L,XL,XXL,XXXL',
-            'total_price' => 'required|integer',
-            'estimate_arrived' => 'required',
-        ]);
+        $orderData = $this->validateOrder($request);
 
         $productId = Product::findOrFail($orderData['product_id']);
 
@@ -50,10 +44,20 @@ class OrderController extends Controller
 
     public function destroy(Order $order)
     {
-        if($order->delete()) {
+        if ($order->delete()) {
             return response()->json(['message' => 'Berhasil membatalkan pesanan'], 204);
         } else {
             return response()->json(['message' => 'Gagal membatalkan pesanan'], 500);
         }
+    }
+
+    protected function validateOrder(Request $request) {
+        return $request->validate([
+            'product_id' => 'required',
+            'qty' => 'required|numeric',
+            'size' => 'required|in:S,M,L,XL,XXL,XXXL',
+            'total_price' => 'required|integer',
+            'estimate_arrived' => 'required',
+        ]);
     }
 }

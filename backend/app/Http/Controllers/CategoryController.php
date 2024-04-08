@@ -9,9 +9,7 @@ class CategoryController extends Controller
 {
     public function store(Request $request)
     {
-        $categoryData = $request->validate([
-            'name' => 'required',
-        ]);
+        $categoryData = $this->validateCategory($request);
 
         if (Category::create($categoryData)) {
             return response()->json(['message' => 'Berhasil membuat kategori baru.'], 201);
@@ -25,9 +23,7 @@ class CategoryController extends Controller
         if ($request->name == $category->name) {
             return response()->json(['message' => 'Anda tidak merubah apapun.'], 200);
         } else {
-            $categoryData = $request->validate([
-                'name' => 'required',
-            ]);
+            $categoryData = $this->validateCategory($request);
 
             if ($category->update($categoryData)) {
                 return response()->json(['message' => 'Berhasil merubah kategori.'], 200);
@@ -44,5 +40,12 @@ class CategoryController extends Controller
         } else {
             return response()->json(['message' => 'Gagal menghapus kategori.'], 500);
         }
+    }
+
+    protected function validateCategory(Request $request)
+    {
+        return $request->validate([
+            'name' => 'required',
+        ]);
     }
 }
