@@ -23,9 +23,15 @@ class ProductController extends Controller
         ]);
 
         if ($product) {
-            return response()->json(['message' => 'Berhasil Menambahkan Produk Baru.'], 201);
+            return response()->json([
+                'status' => true,
+                'message' => 'Berhasil Menambahkan Produk Baru.'
+            ], 201);
         } else {
-            return response()->json(['message' => 'Gagal menambahkan Produk.'], 500);
+            return response()->json([
+                'status' => false,
+                'message' => 'Gagal menambahkan Produk.'
+            ], 422);
         }
     }
 
@@ -46,14 +52,23 @@ class ProductController extends Controller
                 'image' => $imageName
             ]);
 
-            return response()->json(['message' => 'Berhasil Mengupdate Produk.'], 200);
+            return response()->json([
+                'status' => true,
+                'message' => 'Berhasil Mengupdate Produk.'
+            ], 200);
         } else {
             $productData = $this->validateProductWithOutImage($request);
 
             if ($product->update($productData)) {
-                return response()->json(['message' => 'Berhasil Mengupdate Produk.'], 200);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Berhasil mengupdate produk.'
+                ]);
             } else {
-                return response()->json(['message' => 'Gagal Mengupdate Produk.'], 500);
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Gagal Mengupdate Produk.'
+                ], 422);
             }
         }
     }
@@ -61,9 +76,15 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         if ($product->delete()) {
-            return response()->json(['message' => 'Anda berhasil menghapus produk ini.'], 204);
+            return response()->json([
+                'status' => true,
+                'message' => 'Anda berhasil menghapus produk.'
+            ], 204);
         } else {
-            return response()->json(['message' => 'Gagal menghapus produk ini.'], 500);
+            return response()->json([
+                'status' => false,
+                'message' => 'Gagal menghapus produk.'
+            ], 422);
         }
     }
 

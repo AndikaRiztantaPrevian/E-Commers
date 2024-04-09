@@ -20,8 +20,8 @@ return new class extends Migration
             $table->integer('total_price');
             $table->date('date_order');
             $table->date('estimate_arrived');
-            $table->foreignUuid('user_id')->constrained('user')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignUuid('product_id')->constrained('product')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignUuid('product_id')->constrained('products')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

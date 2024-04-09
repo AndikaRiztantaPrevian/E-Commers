@@ -12,23 +12,33 @@ class CategoryController extends Controller
         $categoryData = $this->validateCategory($request);
 
         if (Category::create($categoryData)) {
-            return response()->json(['message' => 'Berhasil membuat kategori baru.'], 201);
+            return response()->json([
+                'status' => true,
+                'message' => 'Berhasil membuat kategori baru.'], 201);
         } else {
-            return response()->json(['message' => 'Gagal membuat kategori baru.'], 500);
+            return response()->json([
+                'status' => false,
+                'message' => 'Gagal membuat kategori baru.'], 422);
         }
     }
 
     public function update(Request $request, Category $category)
     {
         if ($request->name == $category->name) {
-            return response()->json(['message' => 'Anda tidak merubah apapun.'], 200);
+            return response()->json([
+                'status' => true,
+                'message' => 'Anda tidak merubah apapun.'], 200);
         } else {
             $categoryData = $this->validateCategory($request);
 
             if ($category->update($categoryData)) {
-                return response()->json(['message' => 'Berhasil merubah kategori.'], 200);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Berhasil merubah kategori.'], 200);
             } else {
-                return response()->json(['message' => 'Gagal merubah kategori.'], 500);
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Gagal merubah kategori.'], 422);
             }
         }
     }
@@ -36,9 +46,13 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         if ($category->delete()) {
-            return response()->json(['message' => 'Berhasil menghapus kategori.'], 204);
+            return response()->json([
+                'status' => true,
+                'message' => 'Berhasil menghapus kategori.'], 204);
         } else {
-            return response()->json(['message' => 'Gagal menghapus kategori.'], 500);
+            return response()->json([
+                'status' => false,
+                'message' => 'Gagal menghapus kategori.'], 422);
         }
     }
 

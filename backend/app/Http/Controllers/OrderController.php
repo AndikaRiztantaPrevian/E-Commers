@@ -31,9 +31,13 @@ class OrderController extends Controller
         ]);
 
         if ($order) {
-            return response()->json(['message' => 'Berhasil membuat pesanan.'], 201);
+            return response()->json([
+                'status' => true,
+                'message' => 'Berhasil membuat pesanan.'], 201);
         } else {
-            return response()->json(['message' => 'Gagal membuat pesanan.'], 500);
+            return response()->json([
+                'status' => false,
+                'message' => 'Gagal membuat pesanan.'], 500);
         }
     }
 
@@ -45,9 +49,13 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         if ($order->delete()) {
-            return response()->json(['message' => 'Berhasil membatalkan pesanan'], 204);
+            return response()->json([
+                'status' => true,
+                'message' => 'Berhasil membatalkan pesanan'], 204);
         } else {
-            return response()->json(['message' => 'Gagal membatalkan pesanan'], 500);
+            return response()->json([
+                'status' => false,
+                'message' => 'Gagal membatalkan pesanan'], 500);
         }
     }
 
