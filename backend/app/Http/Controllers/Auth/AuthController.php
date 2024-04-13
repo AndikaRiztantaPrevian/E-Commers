@@ -66,6 +66,17 @@ class AuthController extends Controller
         ]);
     }
 
+    // Logout
+    public function logout()
+    {
+        Auth::logout();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Berhasil logout',
+        ]);
+    }
+
     // Validate Request Login
     protected function validateLogin()
     {

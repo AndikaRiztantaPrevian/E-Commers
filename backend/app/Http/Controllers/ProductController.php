@@ -73,7 +73,7 @@ class ProductController extends Controller
         // Validation for data product
         $productData = Validator::make($request->all(), $this->validateProduct());
 
-        // Catch if validation failed
+        // Catch if validation fails
         if ($productData->fails()) {
             return response()->json([
                 'status' => false,
@@ -86,7 +86,7 @@ class ProductController extends Controller
         $imageFileStore = $request->file('image')->storeAs('/Product/Image', 'public');
         $imageUrl = Storage::url($imageFileStore);
 
-        // Process entry data to Product Table
+        // Process entry data to Product
         $product = new Product();
         $product->name = $request->name;
         $product->size = $request->size;
